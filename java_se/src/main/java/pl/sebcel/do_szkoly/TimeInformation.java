@@ -1,9 +1,8 @@
-package pl.sebcel.do_szkoly.jse;
+package pl.sebcel.do_szkoly;
 
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 public class TimeInformation {
 

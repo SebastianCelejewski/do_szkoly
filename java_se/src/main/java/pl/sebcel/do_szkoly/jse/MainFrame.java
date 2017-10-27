@@ -1,5 +1,7 @@
 package pl.sebcel.do_szkoly.jse;
 
+import pl.sebcel.do_szkoly.TimeInformation;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -25,6 +27,7 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
         this.setTitle("Do szkoły!");
+
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -32,6 +35,7 @@ public class MainFrame extends JFrame {
                 System.exit(0);
             }
         });
+
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
         this.add(currentTimeLabel);
         this.add(currentTimeInfo);
@@ -91,5 +95,4 @@ public class MainFrame extends JFrame {
 
         return Color.green;
     }
-
 }
