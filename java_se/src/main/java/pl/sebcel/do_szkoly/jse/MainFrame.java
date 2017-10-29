@@ -4,8 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.stream.Collectors;
 import pl.sebcel.do_szkoly.engine.*;
@@ -22,7 +23,7 @@ public class MainFrame extends JFrame {
     private JLabel schedule = new JLabel();
 
     private String timeFormatString = "H:mm";
-    private DateTimeFormatter tf = DateTimeFormatter.ofPattern(timeFormatString);
+    private DateFormat tf = new SimpleDateFormat(timeFormatString);
 
     public MainFrame() {
         this.setTitle("Do szkoły!");
@@ -65,20 +66,26 @@ public class MainFrame extends JFrame {
         }
 
         currentTimeInfo.setText(tf.format(timeInformation.getCurrentTime()));
-        nextEventInfo.setText(tf.format(timeInformation.getNextEventTime()) + " " + timeInformation.getNextEvent());
-        timeToNextEventInfo.setText(timeInformation.getTimeToNextStep() + " min");
-        timeToNextEventInfo.setForeground(getTimeToNextEventColour(timeInformation.getTimeToNextStep()));
+        if (timeInformation.getNextEventTime() != null) {
+            nextEventInfo.setText(tf.format(timeInformation.getNextEventTime()) + " " + timeInformation.getNextEvent());
+            timeToNextEventInfo.setText(timeInformation.getTimeToNextStepInMinutes() + " min");
+            timeToNextEventInfo.setForeground(getTimeToNextEventColour(timeInformation.getTimeToNextStepInMinutes()));
+        } else {
+            nextEventInfo.setText("-");
+            timeToNextEventInfo.setText("-");
+        }
+
         schedule.setText("<html><br>"+timeInformation.getOutstandingEvents().entrySet().stream().map(x -> scheduleEntryToLine(timeInformation.getCurrentTime(), x)).collect(Collectors.joining("<br>"))+"</html>");
     }
 
-    private String scheduleEntryToLine(LocalTime currentTime, Map.Entry<LocalTime, String> scheduleEntry) {
+    private String scheduleEntryToLine(Date currentTime, Map.Entry<Date, String> scheduleEntry) {
         String result = "";
-        if (scheduleEntry.getKey().isBefore(currentTime)) {
+        if (scheduleEntry.getKey().before(currentTime)) {
             result += "<span style='color:#d0d0d0'>";
         } else {
             result += "<span style='color:#000000'>";
         }
-        result += scheduleEntry.getKey() + " " + scheduleEntry.getValue();
+        result += tf.format(scheduleEntry.getKey()) + " " + scheduleEntry.getValue();
         result += "</span>";
         return result;
     }
