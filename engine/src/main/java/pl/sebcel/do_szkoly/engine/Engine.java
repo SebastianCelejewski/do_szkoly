@@ -1,4 +1,4 @@
-package pl.sebcel.do_szkoly;
+package pl.sebcel.do_szkoly.engine;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;

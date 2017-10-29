@@ -1,6 +1,6 @@
 package pl.sebcel.do_szkoly.jse;
 
-import pl.sebcel.do_szkoly.Engine;
+import pl.sebcel.do_szkoly.engine.*;
 
 public class Main {
 

@@ -1,4 +1,4 @@
-package pl.sebcel.do_szkoly;
+package pl.sebcel.do_szkoly.engine;
 
 public interface EventListener {
 

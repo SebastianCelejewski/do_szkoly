@@ -1,7 +1,5 @@
 package pl.sebcel.do_szkoly.jse;
 
-import pl.sebcel.do_szkoly.TimeInformation;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -10,6 +8,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.stream.Collectors;
+import pl.sebcel.do_szkoly.engine.*;
 
 public class MainFrame extends JFrame {
 
