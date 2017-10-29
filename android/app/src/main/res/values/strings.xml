@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Do szkoły</string>
-    <string name="action_settings">Ustawienia</string>
+    <string name="action_settings">Ustawienia 1</string>
 
     <string name="current_time_label">Aktualny czas</string>
     <string name="next_event_label">Następny krok</string>

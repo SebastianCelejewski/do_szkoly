@@ -41,12 +41,23 @@
         />
 
     <TextView
-        android:id="@+id/nextEventInfo"
+        android:id="@+id/nextEventTime"
         android:text=""
         android:textSize="@dimen/info_text_size"
         android:layout_height="@dimen/info_height"
         android:layout_width="match_parent"
         app:layout_constraintTop_toBottomOf="@id/nextEventLabel"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/nextEventInfo"
+        android:text=""
+        android:textSize="@dimen/info_text_size"
+        android:layout_height="@dimen/info_height"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/nextEventTime"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         />
