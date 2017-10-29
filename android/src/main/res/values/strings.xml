@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Do szkoły</string>
+    <string name="action_settings">Ustawienia</string>
+
+    <string name="current_time_label">Aktualny czas</string>
+    <string name="next_event_label">Następny krok</string>
+    <string name="time_to_next_event_label">Do następnego kroku pozostało</string>
+</resources>
