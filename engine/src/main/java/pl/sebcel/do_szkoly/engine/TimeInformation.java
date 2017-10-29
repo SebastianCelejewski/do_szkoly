@@ -34,6 +34,6 @@ public class TimeInformation {
     }
 
     public long getTimeToNextStepInMinutes() {
-        return (nextEventTime.getTime() -  currentTime.getTime()) / 1000 / 60;
+        return (nextEventTime.getTime() -  currentTime.getTime()) / 1000 / 60 + 1;
     }
 }
