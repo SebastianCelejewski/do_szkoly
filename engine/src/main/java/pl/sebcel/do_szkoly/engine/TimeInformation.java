@@ -1,28 +1,27 @@
 package pl.sebcel.do_szkoly.engine;
 
-import java.time.Duration;
-import java.time.LocalTime;
+import java.util.Date;
 import java.util.TreeMap;
 
 public class TimeInformation {
 
-    private LocalTime currentTime;
-    private LocalTime nextEventTime;
+    private Date currentTime;
+    private Date nextEventTime;
     private String nextEvent;
-    private TreeMap<LocalTime, String> outstandingEvents;
+    private TreeMap<Date, String> outstandingEvents;
 
-    public TimeInformation(LocalTime currentTime, LocalTime nextEventTime, String nextEvent, TreeMap<LocalTime, String> outstandingEvents) {
+    public TimeInformation(Date currentTime, Date nextEventTime, String nextEvent, TreeMap<Date, String> outstandingEvents) {
         this.currentTime = currentTime;
         this.nextEventTime = nextEventTime;
         this.nextEvent = nextEvent;
         this.outstandingEvents = outstandingEvents;
     }
 
-    public LocalTime getCurrentTime() {
+    public Date getCurrentTime() {
         return currentTime;
     }
 
-    public LocalTime getNextEventTime() {
+    public Date getNextEventTime() {
         return nextEventTime;
     }
 
@@ -30,11 +29,11 @@ public class TimeInformation {
         return nextEvent;
     }
 
-    public TreeMap<LocalTime, String> getOutstandingEvents() {
+    public TreeMap<Date, String> getOutstandingEvents() {
         return outstandingEvents;
     }
 
-    public long getTimeToNextStep() {
-        return Duration.between(currentTime, nextEventTime).toMinutes() + 1;
+    public long getTimeToNextStepInMinutes() {
+        return (nextEventTime.getTime() -  currentTime.getTime()) / 1000 / 60;
     }
 }
