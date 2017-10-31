@@ -40,6 +40,7 @@ public class DisplayTime extends AppCompatActivity {
                     @Override
                     public void run() {
                         ((TextView) findViewById(R.id.currentTimeInfo)).setText(df.format(timeInformation.getCurrentTime()));
+                        ((TextView) findViewById(R.id.currentEventInfo)).setText(timeInformation.getCurrentEvent());
                         if (timeInformation.getNextEventTime() != null) {
                             ((TextView) findViewById(R.id.nextEventTime)).setText(df.format(timeInformation.getNextEventTime()));
                             ((TextView) findViewById(R.id.nextEventInfo)).setText(timeInformation.getNextEvent());

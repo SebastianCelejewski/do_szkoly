@@ -19,6 +19,8 @@ public class MainFrame extends JFrame {
 
     private JLabel currentTimeLabel = new JLabel("Aktualny czas");
     private JLabel currentTimeInfo = new JLabel("");
+    private JLabel currentEventLabel = new JLabel("Aktualny krok");
+    private JLabel currentEventInfo = new JLabel("");
     private JLabel nextEventLabel = new JLabel("Następny krok");
     private JLabel nextEventInfo = new JLabel("");
     private JLabel timeToNextEventLabel = new JLabel("Czas do następnego kroku");
@@ -42,6 +44,8 @@ public class MainFrame extends JFrame {
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
         this.add(currentTimeLabel);
         this.add(currentTimeInfo);
+        this.add(currentEventLabel);
+        this.add(currentEventInfo);
         this.add(nextEventLabel);
         this.add(nextEventInfo);
         this.add(timeToNextEventLabel);
@@ -50,6 +54,8 @@ public class MainFrame extends JFrame {
 
         currentTimeLabel.setFont(LABEL_FONT);
         currentTimeInfo.setFont(INFO_FONT);
+        currentEventLabel.setFont(LABEL_FONT);
+        currentEventInfo.setFont(INFO_FONT);
         nextEventLabel.setFont(LABEL_FONT);
         nextEventInfo.setFont(INFO_FONT);
         timeToNextEventLabel.setFont(LABEL_FONT);
@@ -68,6 +74,7 @@ public class MainFrame extends JFrame {
         long timeToNextStep = timeInformation.getTimeToNextStepInMinutes();
 
         currentTimeInfo.setText(tf.format(currentTime));
+        currentEventInfo.setText(timeInformation.getCurrentEvent());
         if (nextEventTime != null) {
             nextEventInfo.setText(tf.format(nextEventTime) + " " + nextEvent);
             timeToNextEventInfo.setText(timeToNextStep + " min");

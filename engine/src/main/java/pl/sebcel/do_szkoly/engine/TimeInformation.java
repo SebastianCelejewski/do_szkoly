@@ -6,12 +6,14 @@ import java.util.TreeMap;
 public class TimeInformation {
 
     private Date currentTime;
+    private String currentEvent;
     private Date nextEventTime;
     private String nextEvent;
     private TreeMap<Date, String> outstandingEvents;
 
-    public TimeInformation(Date currentTime, Date nextEventTime, String nextEvent, TreeMap<Date, String> outstandingEvents) {
+    public TimeInformation(Date currentTime, String currentEvent, Date nextEventTime, String nextEvent, TreeMap<Date, String> outstandingEvents) {
         this.currentTime = currentTime;
+        this.currentEvent = currentEvent;
         this.nextEventTime = nextEventTime;
         this.nextEvent = nextEvent;
         this.outstandingEvents = outstandingEvents;
@@ -19,6 +21,10 @@ public class TimeInformation {
 
     public Date getCurrentTime() {
         return currentTime;
+    }
+
+    public String getCurrentEvent() {
+        return currentEvent;
     }
 
     public Date getNextEventTime() {
