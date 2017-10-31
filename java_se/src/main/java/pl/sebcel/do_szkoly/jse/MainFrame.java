@@ -13,13 +13,16 @@ import pl.sebcel.do_szkoly.engine.*;
 
 public class MainFrame extends JFrame {
 
+    private final static Font LABEL_FONT = new Font("Arial", Font.PLAIN, 24);
+    private final static Font INFO_FONT = new Font("Arial", Font.PLAIN, 96);
+    private final static Font SCHEDULE_FONT = new Font("Arial", Font.PLAIN, 48);
+
     private JLabel currentTimeLabel = new JLabel("Aktualny czas");
     private JLabel currentTimeInfo = new JLabel("");
     private JLabel nextEventLabel = new JLabel("Następny krok");
     private JLabel nextEventInfo = new JLabel("");
     private JLabel timeToNextEventLabel = new JLabel("Czas do następnego kroku");
     private JLabel timeToNextEventInfo = new JLabel("");
-    private JLabel separatorLabel = new JLabel();
     private JLabel schedule = new JLabel();
 
     private String timeFormatString = "H:mm";
@@ -43,39 +46,46 @@ public class MainFrame extends JFrame {
         this.add(nextEventInfo);
         this.add(timeToNextEventLabel);
         this.add(timeToNextEventInfo);
-        this.add(separatorLabel);
         this.add(schedule);
 
-        currentTimeLabel.setFont(new Font("Arial", Font.PLAIN, 24));
-        currentTimeInfo.setFont(new Font("Arial", Font.PLAIN, 96));
-        nextEventLabel.setFont(new Font("Arial", Font.PLAIN, 24));
-        nextEventInfo.setFont(new Font("Arial", Font.PLAIN, 96));
-        timeToNextEventLabel.setFont(new Font("Arial", Font.PLAIN, 24));
-        timeToNextEventInfo.setFont(new Font("Arial", Font.PLAIN, 96));
-        separatorLabel.setFont(new Font("Arial", Font.PLAIN, 48));
-        schedule.setFont(new Font("Arial", Font.PLAIN, 48));
+        currentTimeLabel.setFont(LABEL_FONT);
+        currentTimeInfo.setFont(INFO_FONT);
+        nextEventLabel.setFont(LABEL_FONT);
+        nextEventInfo.setFont(INFO_FONT);
+        timeToNextEventLabel.setFont(LABEL_FONT);
+        timeToNextEventInfo.setFont(INFO_FONT);
+        schedule.setFont(SCHEDULE_FONT);
     }
 
     public void displayTimeInformation(TimeInformation timeInformation) {
         if (!isVisible()) {
-            Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
-            Dimension frameDimension = new Dimension((int) (screenDimension.getWidth() * 0.8), (int) (screenDimension.getHeight() * 0.8));
-            this.setSize(frameDimension);
-            this.setLocation(screenDimension.width / 10, screenDimension.height / 10);
-            this.setVisible(true);
+            initializeFrame();
         }
 
-        currentTimeInfo.setText(tf.format(timeInformation.getCurrentTime()));
-        if (timeInformation.getNextEventTime() != null) {
-            nextEventInfo.setText(tf.format(timeInformation.getNextEventTime()) + " " + timeInformation.getNextEvent());
-            timeToNextEventInfo.setText(timeInformation.getTimeToNextStepInMinutes() + " min");
-            timeToNextEventInfo.setForeground(getTimeToNextEventColour(timeInformation.getTimeToNextStepInMinutes()));
+        Date currentTime = timeInformation.getCurrentTime();
+        Date nextEventTime = timeInformation.getNextEventTime();
+        String nextEvent = timeInformation.getNextEvent();
+        long timeToNextStep = timeInformation.getTimeToNextStepInMinutes();
+
+        currentTimeInfo.setText(tf.format(currentTime));
+        if (nextEventTime != null) {
+            nextEventInfo.setText(tf.format(nextEventTime) + " " + nextEvent);
+            timeToNextEventInfo.setText(timeToNextStep + " min");
+            timeToNextEventInfo.setForeground(getTimeToNextEventColour(timeToNextStep));
         } else {
             nextEventInfo.setText("-");
             timeToNextEventInfo.setText("-");
         }
 
         schedule.setText("<html><br>"+timeInformation.getOutstandingEvents().entrySet().stream().map(x -> scheduleEntryToLine(timeInformation.getCurrentTime(), x)).collect(Collectors.joining("<br>"))+"</html>");
+    }
+
+    private void initializeFrame() {
+        Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension frameDimension = new Dimension((int) (screenDimension.getWidth() * 0.8), (int) (screenDimension.getHeight() * 0.8));
+        this.setSize(frameDimension);
+        this.setLocation(screenDimension.width / 10, screenDimension.height / 10);
+        this.setVisible(true);
     }
 
     private String scheduleEntryToLine(Date currentTime, Map.Entry<Date, String> scheduleEntry) {
