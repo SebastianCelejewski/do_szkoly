@@ -40,10 +40,10 @@ public class DisplayTime extends AppCompatActivity {
         });
 
         engine = new Engine();
-        engine.addEvent("10:00", "Ubieranie się");
-        engine.addEvent("10:30", "Wychodzenie z domu");
-        engine.addEvent("10:43", "Autobus 268");
-        engine.addEvent("11:00", "W szkole");
+        engine.addStep("12:00", "Ubieranie się");
+        engine.addStep("12:30", "Wychodzenie z domu");
+        engine.addStep("12:43", "Autobus 268");
+        engine.addStep("13:00", "W szkole");
 
         engine.addEventListener(new EventListener() {
             @Override
@@ -52,10 +52,15 @@ public class DisplayTime extends AppCompatActivity {
                     @Override
                     public void run() {
                         ((TextView) findViewById(R.id.currentTimeInfo)).setText(df.format(timeInformation.getCurrentTime()));
-                        ((TextView) findViewById(R.id.currentEventInfo)).setText(timeInformation.getCurrentEvent());
-                        if (timeInformation.getNextEventTime() != null) {
-                            ((TextView) findViewById(R.id.nextEventTime)).setText(df.format(timeInformation.getNextEventTime()));
-                            ((TextView) findViewById(R.id.nextEventInfo)).setText(timeInformation.getNextEvent());
+                        if (timeInformation.getCurrentStep() != null) {
+                            ((TextView) findViewById(R.id.currentEventInfo)).setText(timeInformation.getCurrentStep().getDescription());
+                        } else {
+                            ((TextView) findViewById(R.id.currentEventInfo)).setText("-");
+                        }
+
+                        if (timeInformation.getNextStep() != null) {
+                            ((TextView) findViewById(R.id.nextEventTime)).setText(df.format(timeInformation.getNextStep().getStartTime()));
+                            ((TextView) findViewById(R.id.nextEventInfo)).setText(timeInformation.getNextStep().getDescription());
                             ((TextView) findViewById(R.id.timeToNextEventInfo)).setText("" + timeInformation.getTimeToNextStepInMinutes() + " min");
                             ((TextView) findViewById(R.id.timeToNextEventInfo)).setTextColor(getTimeToNextEventColour(timeInformation.getTimeToNextStepInMinutes()));
                         } else {

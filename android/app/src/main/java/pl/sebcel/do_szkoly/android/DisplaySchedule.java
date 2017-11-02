@@ -15,6 +15,7 @@ import java.util.Map;
 
 import pl.sebcel.do_szkoly.engine.Engine;
 import pl.sebcel.do_szkoly.engine.EventListener;
+import pl.sebcel.do_szkoly.engine.Step;
 import pl.sebcel.do_szkoly.engine.TimeInformation;
 
 public class DisplaySchedule extends AppCompatActivity {
@@ -30,10 +31,10 @@ public class DisplaySchedule extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         engine = new Engine();
-        engine.addEvent("10:00", "Ubieranie się");
-        engine.addEvent("10:30", "Wychodzenie z domu");
-        engine.addEvent("10:43", "Autobus 268");
-        engine.addEvent("11:00", "W szkole");
+        engine.addStep("12:00", "Ubieranie się");
+        engine.addStep("12:30", "Wychodzenie z domu");
+        engine.addStep("12:43", "Autobus 268");
+        engine.addStep("13:00", "W szkole");
 
         engine.addEventListener(new EventListener() {
             @Override
@@ -50,17 +51,22 @@ public class DisplaySchedule extends AppCompatActivity {
                         String currentStepText = "";
                         String outstandingStepsText = "";
 
-                        for (Map.Entry<Date, String> step : timeInformation.getCompletedEvents().entrySet()) {
+                        for (Step step : timeInformation.getCompletedSteps()) {
                             if (completedStepsText.length() > 0) {
                                 completedStepsText += "\n";
                             }
                             completedStepsText += stepToString(step);
                         }
 
-                        currentStepText = "Teraz: " + timeInformation.getCurrentEvent() + "\n";
-                        currentStepText += "Jeszcze " + timeInformation.getTimeToNextStepInMinutes() + " min.";
+                        if (timeInformation.getCurrentStep() != null) {
+                            currentStepText = "Teraz: " + timeInformation.getCurrentStep().getDescription() + "\n";
+                        }
 
-                        for (Map.Entry<Date, String> step : timeInformation.getOutstandingEvents().entrySet()) {
+                        if (timeInformation.getNextStep() != null) {
+                            currentStepText += "Jeszcze " + timeInformation.getTimeToNextStepInMinutes() + " min.";
+                        }
+
+                        for (Step step : timeInformation.getOutstandingSteps()) {
                             if (outstandingStepsText.length() > 0) {
                                 outstandingStepsText += "\n";
                             }
@@ -78,7 +84,7 @@ public class DisplaySchedule extends AppCompatActivity {
         engine.start();
     }
 
-    private String stepToString(Map.Entry<Date, String> step) {
-        return df.format(step.getKey()) + "\t" + step.getValue();
+    private String stepToString(Step step) {
+        return df.format(step.getStartTime()) + " " + step.getDescription();
     }
 }
