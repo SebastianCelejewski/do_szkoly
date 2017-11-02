@@ -13,7 +13,7 @@ public class Engine {
 
     private TreeMap<Date, String> schedule = new TreeMap<>();
 
-    public void addEvent(String time, String description) {
+    public void addStep(String time, String description) {
         if (time == null || time.trim().equals("")) {
             throw new RuntimeException("Time cannot be null or empty");
         }

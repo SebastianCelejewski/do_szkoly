@@ -1,51 +1,46 @@
 package pl.sebcel.do_szkoly.engine;
 
 import java.util.Date;
+import java.util.List;
 import java.util.TreeMap;
 
 public class TimeInformation {
 
     private Date currentTime;
-    private String currentEvent;
-    private Date nextEventTime;
-    private String nextEvent;
-    private TreeMap<Date, String> completedEvents;
-    private TreeMap<Date, String> outstandingEvents;
+    private Step currentStep;
+    private Step nextStep;
+    private List<Step> completedSteps;
+    private List<Step> outstandingSteps;
 
-    public TimeInformation(Date currentTime, String currentEvent, Date nextEventTime, String nextEvent, TreeMap<Date, String> completedEvents, TreeMap<Date, String> outstandingEvents) {
+    public TimeInformation(Date currentTime, Step currentStep, Step nextStep, List<Step> completedSteps, List<Step> outstandingSteps) {
         this.currentTime = currentTime;
-        this.currentEvent = currentEvent;
-        this.nextEventTime = nextEventTime;
-        this.nextEvent = nextEvent;
-        this.completedEvents = completedEvents;
-        this.outstandingEvents = outstandingEvents;
+        this.currentStep = currentStep;
+        this.nextStep = nextStep;
+        this.completedSteps = completedSteps;
+        this.outstandingSteps = outstandingSteps;
     }
 
     public Date getCurrentTime() {
         return currentTime;
     }
 
-    public String getCurrentEvent() {
-        return currentEvent;
+    public Step getCurrentStep() {
+        return currentStep;
     }
 
-    public Date getNextEventTime() {
-        return nextEventTime;
+    public Step getNextStep() {
+        return nextStep;
     }
 
-    public String getNextEvent() {
-        return nextEvent;
+    public List<Step> getCompletedSteps() {
+        return completedSteps;
     }
 
-    public TreeMap<Date, String> getCompletedEvents() {
-        return completedEvents;
-    }
-
-    public TreeMap<Date, String> getOutstandingEvents() {
-        return outstandingEvents;
+    public List<Step> getOutstandingSteps() {
+        return outstandingSteps;
     }
 
     public long getTimeToNextStepInMinutes() {
-        return (nextEventTime.getTime() -  currentTime.getTime()) / 1000 / 60 + 1;
+        return (nextStep.getStartTime().getTime() -  currentTime.getTime()) / 1000 / 60 + 1;
     }
 }
