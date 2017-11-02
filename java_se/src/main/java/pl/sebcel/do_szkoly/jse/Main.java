@@ -13,10 +13,10 @@ public class Main {
     }
 
     public void run() {
-        engine.addEvent("8:00", "Ubieranie się");
-        engine.addEvent("8:30", "Wychodzenie z domu");
-        engine.addEvent("8:43", "Autobus 268");
-        engine.addEvent("9:00", "W szkole");
+        engine.addEvent("10:00", "Ubieranie się");
+        engine.addEvent("10:30", "Wychodzenie z domu");
+        engine.addEvent("10:43", "Autobus 268");
+        engine.addEvent("11:00", "W szkole");
 
         engine.addEventListener(timeInformation -> mainFrame.displayTimeInformation(timeInformation));
 

@@ -71,20 +71,30 @@ public class MainFrame extends JFrame {
         Date currentTime = timeInformation.getCurrentTime();
         Date nextEventTime = timeInformation.getNextEventTime();
         String nextEvent = timeInformation.getNextEvent();
-        long timeToNextStep = timeInformation.getTimeToNextStepInMinutes();
 
         currentTimeInfo.setText(tf.format(currentTime));
-        currentEventInfo.setText(timeInformation.getCurrentEvent());
         if (nextEventTime != null) {
+            long timeToNextStep = timeInformation.getTimeToNextStepInMinutes();
+            currentEventInfo.setText(timeInformation.getCurrentEvent());
             nextEventInfo.setText(tf.format(nextEventTime) + " " + nextEvent);
             timeToNextEventInfo.setText(timeToNextStep + " min");
             timeToNextEventInfo.setForeground(getTimeToNextEventColour(timeToNextStep));
         } else {
+            currentEventInfo.setText("-");
             nextEventInfo.setText("-");
             timeToNextEventInfo.setText("-");
         }
 
-        schedule.setText("<html><br>"+timeInformation.getOutstandingEvents().entrySet().stream().map(x -> scheduleEntryToLine(timeInformation.getCurrentTime(), x)).collect(Collectors.joining("<br>"))+"</html>");
+        String scheduleText = "";
+        scheduleText += "<html><br>";
+
+        scheduleText += timeInformation.getCompletedEvents().entrySet().stream().map(x -> "<span style='color:grey'>" + scheduleEntryToLine(x) + "</span>").collect(Collectors.joining("<br>")) + "<br>";
+        scheduleText += "<span style='color:red'>" + timeInformation.getCurrentEvent() + "</span><br>";
+        scheduleText += timeInformation.getOutstandingEvents().entrySet().stream().map(x -> "<span style='color:green'>" + scheduleEntryToLine(x) + "</span>").collect(Collectors.joining("<br>")) + "<br>";
+
+        scheduleText += "</html>";
+
+        schedule.setText(scheduleText);
     }
 
     private void initializeFrame() {
@@ -95,16 +105,8 @@ public class MainFrame extends JFrame {
         this.setVisible(true);
     }
 
-    private String scheduleEntryToLine(Date currentTime, Map.Entry<Date, String> scheduleEntry) {
-        String result = "";
-        if (scheduleEntry.getKey().before(currentTime)) {
-            result += "<span style='color:#d0d0d0'>";
-        } else {
-            result += "<span style='color:#000000'>";
-        }
-        result += tf.format(scheduleEntry.getKey()) + " " + scheduleEntry.getValue();
-        result += "</span>";
-        return result;
+    private String scheduleEntryToLine(Map.Entry<Date, String> scheduleEntry) {
+        return tf.format(scheduleEntry.getKey()) + " " + scheduleEntry.getValue();
     }
 
     private Color getTimeToNextEventColour(long timeToNextEvent) {
