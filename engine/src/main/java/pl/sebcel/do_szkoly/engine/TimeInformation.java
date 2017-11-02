@@ -9,13 +9,15 @@ public class TimeInformation {
     private String currentEvent;
     private Date nextEventTime;
     private String nextEvent;
+    private TreeMap<Date, String> completedEvents;
     private TreeMap<Date, String> outstandingEvents;
 
-    public TimeInformation(Date currentTime, String currentEvent, Date nextEventTime, String nextEvent, TreeMap<Date, String> outstandingEvents) {
+    public TimeInformation(Date currentTime, String currentEvent, Date nextEventTime, String nextEvent, TreeMap<Date, String> completedEvents, TreeMap<Date, String> outstandingEvents) {
         this.currentTime = currentTime;
         this.currentEvent = currentEvent;
         this.nextEventTime = nextEventTime;
         this.nextEvent = nextEvent;
+        this.completedEvents = completedEvents;
         this.outstandingEvents = outstandingEvents;
     }
 
@@ -33,6 +35,10 @@ public class TimeInformation {
 
     public String getNextEvent() {
         return nextEvent;
+    }
+
+    public TreeMap<Date, String> getCompletedEvents() {
+        return completedEvents;
     }
 
     public TreeMap<Date, String> getOutstandingEvents() {
