@@ -30,10 +30,10 @@ public class DisplaySchedule extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         engine = new Engine();
-        engine.addEvent("9:00", "Ubieranie się");
-        engine.addEvent("9:30", "Wychodzenie z domu");
-        engine.addEvent("9:43", "Autobus 268");
-        engine.addEvent("10:00", "W szkole");
+        engine.addEvent("10:00", "Ubieranie się");
+        engine.addEvent("10:30", "Wychodzenie z domu");
+        engine.addEvent("10:43", "Autobus 268");
+        engine.addEvent("11:00", "W szkole");
 
         engine.addEventListener(new EventListener() {
             @Override
@@ -47,11 +47,29 @@ public class DisplaySchedule extends AppCompatActivity {
                         TextView outstandingStepsView = ((TextView) findViewById(R.id.outstandingSteps));
 
                         String completedStepsText = "";
+                        String currentStepText = "";
+                        String outstandingStepsText = "";
+
+                        for (Map.Entry<Date, String> step : timeInformation.getCompletedEvents().entrySet()) {
+                            if (completedStepsText.length() > 0) {
+                                completedStepsText += "\n";
+                            }
+                            completedStepsText += stepToString(step);
+                        }
+
+                        currentStepText = "Teraz: " + timeInformation.getCurrentEvent() + "\n";
+                        currentStepText += "Jeszcze " + timeInformation.getTimeToNextStepInMinutes() + " min.";
+
                         for (Map.Entry<Date, String> step : timeInformation.getOutstandingEvents().entrySet()) {
-                            completedStepsText += stepToString(step) + "\n";
+                            if (outstandingStepsText.length() > 0) {
+                                outstandingStepsText += "\n";
+                            }
+                            outstandingStepsText += stepToString(step);
                         }
 
                         completedStepsView.setText(completedStepsText);
+                        currentStepView.setText(currentStepText);
+                        outstandingStepsView.setText(outstandingStepsText);
                     }
                 });
             }

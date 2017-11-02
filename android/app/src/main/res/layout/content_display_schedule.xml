@@ -21,6 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
+            android:textSize="@dimen/label_text_size"
             android:textColor="@android:color/darker_gray" />
 
         <TextView
@@ -29,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:textColor="@android:color/holo_red_dark"
+            android:textSize="@dimen/label_text_size"
             app:layout_constraintTop_toBottomOf="@id/completedSteps" />
 
         <TextView
@@ -36,6 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
+            android:textSize="@dimen/label_text_size"
             android:textColor="@android:color/holo_green_dark"
             app:layout_constraintTop_toBottomOf="@id/currentStep" />
 
