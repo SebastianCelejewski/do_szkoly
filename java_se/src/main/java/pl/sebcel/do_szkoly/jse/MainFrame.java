@@ -7,7 +7,6 @@ import java.awt.event.WindowEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 import java.util.stream.Collectors;
 import pl.sebcel.do_szkoly.engine.*;
 
@@ -19,12 +18,12 @@ public class MainFrame extends JFrame {
 
     private JLabel currentTimeLabel = new JLabel("Aktualny czas");
     private JLabel currentTimeInfo = new JLabel("");
-    private JLabel currentEventLabel = new JLabel("Aktualny krok");
-    private JLabel currentEventInfo = new JLabel("");
-    private JLabel nextEventLabel = new JLabel("Następny krok");
-    private JLabel nextEventInfo = new JLabel("");
-    private JLabel timeToNextEventLabel = new JLabel("Czas do następnego kroku");
-    private JLabel timeToNextEventInfo = new JLabel("");
+    private JLabel currentStepLabel = new JLabel("Aktualny krok");
+    private JLabel currentStepInfo = new JLabel("");
+    private JLabel nextStepLabel = new JLabel("Następny krok");
+    private JLabel nextStepInfo = new JLabel("");
+    private JLabel timeToNextStepLabel = new JLabel("Czas do następnego kroku");
+    private JLabel timeToNextStepInfo = new JLabel("");
     private JLabel schedule = new JLabel();
 
     private String timeFormatString = "H:mm";
@@ -44,22 +43,22 @@ public class MainFrame extends JFrame {
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
         this.add(currentTimeLabel);
         this.add(currentTimeInfo);
-        this.add(currentEventLabel);
-        this.add(currentEventInfo);
-        this.add(nextEventLabel);
-        this.add(nextEventInfo);
-        this.add(timeToNextEventLabel);
-        this.add(timeToNextEventInfo);
+        this.add(currentStepLabel);
+        this.add(currentStepInfo);
+        this.add(nextStepLabel);
+        this.add(nextStepInfo);
+        this.add(timeToNextStepLabel);
+        this.add(timeToNextStepInfo);
         this.add(schedule);
 
         currentTimeLabel.setFont(LABEL_FONT);
         currentTimeInfo.setFont(INFO_FONT);
-        currentEventLabel.setFont(LABEL_FONT);
-        currentEventInfo.setFont(INFO_FONT);
-        nextEventLabel.setFont(LABEL_FONT);
-        nextEventInfo.setFont(INFO_FONT);
-        timeToNextEventLabel.setFont(LABEL_FONT);
-        timeToNextEventInfo.setFont(INFO_FONT);
+        currentStepLabel.setFont(LABEL_FONT);
+        currentStepInfo.setFont(INFO_FONT);
+        nextStepLabel.setFont(LABEL_FONT);
+        nextStepInfo.setFont(INFO_FONT);
+        timeToNextStepLabel.setFont(LABEL_FONT);
+        timeToNextStepInfo.setFont(INFO_FONT);
         schedule.setFont(SCHEDULE_FONT);
     }
 
@@ -69,28 +68,34 @@ public class MainFrame extends JFrame {
         }
 
         Date currentTime = timeInformation.getCurrentTime();
-        Date nextEventTime = timeInformation.getNextEventTime();
-        String nextEvent = timeInformation.getNextEvent();
+        Step currentStep = timeInformation.getCurrentStep();
+        Step nextStep = timeInformation.getNextStep();
 
         currentTimeInfo.setText(tf.format(currentTime));
-        if (nextEventTime != null) {
-            long timeToNextStep = timeInformation.getTimeToNextStepInMinutes();
-            currentEventInfo.setText(timeInformation.getCurrentEvent());
-            nextEventInfo.setText(tf.format(nextEventTime) + " " + nextEvent);
-            timeToNextEventInfo.setText(timeToNextStep + " min");
-            timeToNextEventInfo.setForeground(getTimeToNextEventColour(timeToNextStep));
+        if (currentStep != null) {
+            currentStepInfo.setText(currentStep.getDescription());
         } else {
-            currentEventInfo.setText("-");
-            nextEventInfo.setText("-");
-            timeToNextEventInfo.setText("-");
+            currentStepInfo.setText("-");
+        }
+
+        if (nextStep != null) {
+            long timeToNextStep = timeInformation.getTimeToNextStepInMinutes();
+            nextStepInfo.setText(tf.format(nextStep.getStartTime()) + " " + nextStep.getDescription());
+            timeToNextStepInfo.setText(timeToNextStep + " min");
+            timeToNextStepInfo.setForeground(getTimeToNextStepColour(timeToNextStep));
+        } else {
+            nextStepInfo.setText("-");
+            timeToNextStepInfo.setText("-");
         }
 
         String scheduleText = "";
         scheduleText += "<html><br>";
 
-        scheduleText += timeInformation.getCompletedEvents().entrySet().stream().map(x -> "<span style='color:grey'>" + scheduleEntryToLine(x) + "</span>").collect(Collectors.joining("<br>")) + "<br>";
-        scheduleText += "<span style='color:red'>" + timeInformation.getCurrentEvent() + "</span><br>";
-        scheduleText += timeInformation.getOutstandingEvents().entrySet().stream().map(x -> "<span style='color:green'>" + scheduleEntryToLine(x) + "</span>").collect(Collectors.joining("<br>")) + "<br>";
+        scheduleText += timeInformation.getCompletedSteps().stream().map(x -> "<span style='color:grey'>" + scheduleEntryToLine(x) + "</span>").collect(Collectors.joining("<br>")) + "<br>";
+        if (currentStep != null) {
+            scheduleText += "<span style='color:red'>" + scheduleEntryToLine(currentStep) + "</span><br>";
+        }
+        scheduleText += timeInformation.getOutstandingSteps().stream().map(x -> "<span style='color:green'>" + scheduleEntryToLine(x) + "</span>").collect(Collectors.joining("<br>")) + "<br>";
 
         scheduleText += "</html>";
 
@@ -105,16 +110,16 @@ public class MainFrame extends JFrame {
         this.setVisible(true);
     }
 
-    private String scheduleEntryToLine(Map.Entry<Date, String> scheduleEntry) {
-        return tf.format(scheduleEntry.getKey()) + " " + scheduleEntry.getValue();
+    private String scheduleEntryToLine(Step step) {
+        return tf.format(step.getStartTime()) + " " + step.getDescription();
     }
 
-    private Color getTimeToNextEventColour(long timeToNextEvent) {
-        if (timeToNextEvent < 2) {
+    private Color getTimeToNextStepColour(long timeToNextStep) {
+        if (timeToNextStep < 2) {
             return Color.red;
         }
 
-        if (timeToNextEvent < 5) {
+        if (timeToNextStep < 5) {
             return Color.yellow;
         }
 
