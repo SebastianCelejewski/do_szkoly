@@ -113,14 +113,5 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             />
-
-        <Button
-            android:id="@+id/showScheduleButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/timeToNextEventInfo"
-            android:text="@string/show_schedule"
-            />
-
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>

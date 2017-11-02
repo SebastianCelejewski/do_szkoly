@@ -3,6 +3,8 @@ package pl.sebcel.do_szkoly.android;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -29,15 +31,6 @@ public class DisplayTime extends AppCompatActivity {
         setContentView(R.layout.activity_display_time);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        Button showScheduleButton = (Button) findViewById(R.id.showScheduleButton);
-        showScheduleButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                onShowScheduleClick();
-            }
-        });
 
         engine = new Engine();
         engine.addStep("12:00", "Ubieranie się");
@@ -81,10 +74,18 @@ public class DisplayTime extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_display_time, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_show_schedule) {
+            onShowScheduleClick();
             return true;
         }
 

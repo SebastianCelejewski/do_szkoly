@@ -1,12 +1,9 @@
 <resources>
     <string name="app_name">Do szkoły</string>
-    <string name="action_settings">Ustawienia 1</string>
+    <string name="action_show_schedule">Pokaż plan</string>
 
     <string name="current_time_label">Aktualny czas</string>
     <string name="current_event_label">Aktualny krok</string>
     <string name="next_event_label">Następny krok</string>
     <string name="time_to_next_event_label">Do następnego kroku pozostało</string>
-    <string name="show_schedule">Pokaż cały plan</string>
-
-    <string name="title_activity_display_schedule">DisplaySchedule</string>
 </resources>
