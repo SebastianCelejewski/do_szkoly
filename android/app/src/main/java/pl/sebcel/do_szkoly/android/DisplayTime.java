@@ -1,11 +1,14 @@
 package pl.sebcel.do_szkoly.android;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -26,6 +29,15 @@ public class DisplayTime extends AppCompatActivity {
         setContentView(R.layout.activity_display_time);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Button showScheduleButton = (Button) findViewById(R.id.showScheduleButton);
+        showScheduleButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                onShowScheduleClick();
+            }
+        });
 
         engine = new Engine();
         engine.addEvent("8:00", "Ubieranie się");
@@ -58,10 +70,9 @@ public class DisplayTime extends AppCompatActivity {
         engine.start();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_display_time, menu);
-        return true;
+    public void onShowScheduleClick() {
+        Intent intent = new Intent(this, DisplaySchedule.class);
+        startActivity(intent);
     }
 
     @Override

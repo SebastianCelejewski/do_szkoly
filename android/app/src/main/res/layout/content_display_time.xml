@@ -10,6 +10,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="@dimen/text_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="pl.sebcel.do_szkoly.android.DisplayTime"
         tools:showIn="@layout/activity_display_time">
@@ -110,6 +111,14 @@
             app:layout_constraintTop_toBottomOf="@id/timeToNextEventLabel"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            />
+
+        <Button
+            android:id="@+id/showScheduleButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/timeToNextEventInfo"
+            android:text="@string/show_schedule"
             />
 
     </android.support.constraint.ConstraintLayout>
