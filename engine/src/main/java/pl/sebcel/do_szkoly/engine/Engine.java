@@ -24,7 +24,13 @@ public class Engine {
         listeners.add(listener);
     }
 
-    public void start() {
+    public void start(int delayInSeconds) {
+        if (delayInSeconds < 1) {
+            delayInSeconds = 1;
+        }
+
+        final int delayInMillis = delayInSeconds * 1000;
+
         Thread worker = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -33,7 +39,7 @@ public class Engine {
                     notifyListeners(timeInformation);
 
                     try {
-                        Thread.sleep(10000);
+                        Thread.sleep(delayInMillis);
                     } catch (Exception ex) {
                         // intentional
                     }
