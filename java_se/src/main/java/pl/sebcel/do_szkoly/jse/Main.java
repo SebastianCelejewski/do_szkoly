@@ -20,6 +20,6 @@ public class Main {
 
         engine.addEventListener(timeInformation -> mainFrame.displayTimeInformation(timeInformation));
 
-        engine.start();
+        engine.start(10);
    }
 }
