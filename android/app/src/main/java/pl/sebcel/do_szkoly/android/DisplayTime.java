@@ -4,8 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -36,6 +38,9 @@ public class DisplayTime extends AppCompatActivity {
         initializeGUI();
         subscribeToScheduleServiceNotifications();
         createScheduleService();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String s = sharedPreferences.getString("pref_target_time", "");
     }
 
     @Override
@@ -48,6 +53,11 @@ public class DisplayTime extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_show_schedule) {
             onShowScheduleClick();
+            return true;
+        }
+
+        if (item.getItemId() == R.id.action_show_settings) {
+            onShowSettingsClick();
             return true;
         }
 
@@ -111,6 +121,11 @@ public class DisplayTime extends AppCompatActivity {
     private void onShowScheduleClick() {
         Intent intent = new Intent(this, DisplaySchedule.class);
         intent.putExtra(ScheduleService.TIME_UPDATE_DATA, mostRecentTimeInformation);
+        startActivity(intent);
+    }
+
+    private void onShowSettingsClick() {
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 

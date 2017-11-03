@@ -24,6 +24,10 @@ public class Engine {
         listeners.add(listener);
     }
 
+    public void removeEventListener(EventListener listener) {
+        listeners.remove(listener);
+    }
+
     public void start(int delayInSeconds) {
         if (delayInSeconds < 1) {
             delayInSeconds = 1;

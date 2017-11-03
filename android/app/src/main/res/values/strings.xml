@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Do szkoły</string>
+
     <string name="action_show_schedule">Pokaż plan</string>
+    <string name="action_show_settings">Ustawienia</string>
 
     <string name="current_time_label">Aktualny czas</string>
     <string name="current_event_label">Aktualny krok</string>
@@ -8,4 +10,11 @@
     <string name="time_to_next_event_label">Do następnego kroku pozostało</string>
 
     <string name="time_in_minutes">%1$d min.</string>
+
+    <string name="pref_target_time">Czas docelowy</string>
+    <string name="pref_target_time_summary">Godzina, o której masz być w szkole</string>
+    <string name="pref_target_time_dialog_title">Wybierz godzinę, o której masz być w szkole</string>
+    <string name="pref_target_time_default">1</string>
+    <string name="title_activity_settings">Settings</string>
+
 </resources>
