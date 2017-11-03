@@ -22,13 +22,49 @@ public class DisplayTime extends AppCompatActivity {
 
     private DateFormat df = new SimpleDateFormat("H:mm");
 
+    private TextView currentTimeInfo;
+    private TextView currentStepInfo;
+    private TextView nextStepTime;
+    private TextView nextStepInfo;
+    private TextView timeToNextStepInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initializeGUI();
+        subscribeToScheduleServiceNotifications();
+        createScheduleService();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_display_time, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_show_schedule) {
+            onShowScheduleClick();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void initializeGUI() {
         setContentView(R.layout.activity_display_time);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        currentTimeInfo = findViewById(R.id.currentTimeInfo);
+        currentStepInfo = findViewById(R.id.currentStepInfo);
+        nextStepTime = findViewById(R.id.nextStepTime);
+        nextStepInfo = findViewById(R.id.nextStepInfo);
+        timeToNextStepInfo = findViewById(R.id.timeToNextStepInfo);
+    }
+
+    private void subscribeToScheduleServiceNotifications() {
         IntentFilter timeUpdateFilter = new IntentFilter(ScheduleService.HANDLE_TIME_UPDATE_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
             @Override
@@ -37,7 +73,9 @@ public class DisplayTime extends AppCompatActivity {
                 handleTimeInformation(timeInformation);
             }
         }, timeUpdateFilter);
+    }
 
+    private void createScheduleService() {
         Intent scheduleServiceIntent = new Intent(this, ScheduleService.class);
         startService(scheduleServiceIntent);
     }
@@ -46,48 +84,30 @@ public class DisplayTime extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ((TextView) findViewById(R.id.currentTimeInfo)).setText(df.format(timeInformation.getCurrentTime()));
+                currentTimeInfo.setText(df.format(timeInformation.getCurrentTime()));
+
                 if (timeInformation.getCurrentStep() != null) {
-                    ((TextView) findViewById(R.id.currentEventInfo)).setText(timeInformation.getCurrentStep().getDescription());
+                    currentStepInfo.setText(timeInformation.getCurrentStep().getDescription());
                 } else {
-                    ((TextView) findViewById(R.id.currentEventInfo)).setText("-");
+                    currentStepInfo.setText("-");
                 }
 
                 if (timeInformation.getNextStep() != null) {
-                    ((TextView) findViewById(R.id.nextEventTime)).setText(df.format(timeInformation.getNextStep().getStartTime()));
-                    ((TextView) findViewById(R.id.nextEventInfo)).setText(timeInformation.getNextStep().getDescription());
-                    ((TextView) findViewById(R.id.timeToNextEventInfo)).setText(getString(R.string.time_in_minutes, timeInformation.getTimeToNextStepInMinutes()));
-                    ((TextView) findViewById(R.id.timeToNextEventInfo)).setTextColor(getTimeToNextEventColour(timeInformation.getTimeToNextStepInMinutes()));
+                    nextStepTime.setText(df.format(timeInformation.getNextStep().getStartTime()));
+                    nextStepInfo.setText(timeInformation.getNextStep().getDescription());
+                    timeToNextStepInfo.setText(getString(R.string.time_in_minutes, timeInformation.getTimeToNextStepInMinutes()));
+                    timeToNextStepInfo.setTextColor(getTimeToNextEventColour(timeInformation.getTimeToNextStepInMinutes()));
                 } else {
-                    ((TextView) findViewById(R.id.nextEventInfo)).setText("-");
-                    ((TextView) findViewById(R.id.timeToNextEventInfo)).setText("-");
+                    nextStepInfo.setText("-");
+                    timeToNextStepInfo.setText("-");
                 }
             }
         });
     }
 
-    public void onShowScheduleClick() {
+    private void onShowScheduleClick() {
         Intent intent = new Intent(this, DisplaySchedule.class);
         startActivity(intent);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_display_time, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_show_schedule) {
-            onShowScheduleClick();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private int getTimeToNextEventColour(long timeToNextEvent) {

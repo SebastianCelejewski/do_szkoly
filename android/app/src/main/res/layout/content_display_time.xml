@@ -38,7 +38,7 @@
             />
 
         <TextView
-            android:id="@+id/currentEventLabel"
+            android:id="@+id/currentStepLabel"
             android:text="@string/current_event_label"
             android:textSize="@dimen/label_text_size"
             android:layout_height="@dimen/label_height"
@@ -49,67 +49,67 @@
             />
 
         <TextView
-            android:id="@+id/currentEventInfo"
+            android:id="@+id/currentStepInfo"
             android:text=""
             android:textSize="@dimen/info_text_size"
             android:layout_height="@dimen/info_height"
             android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/currentEventLabel"
+            app:layout_constraintTop_toBottomOf="@id/currentStepLabel"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             />
 
         <TextView
-            android:id="@+id/nextEventLabel"
+            android:id="@+id/nextStepLabel"
             android:text="@string/next_event_label"
             android:layout_height="@dimen/label_height"
             android:layout_width="match_parent"
             android:textSize="@dimen/label_text_size"
-            app:layout_constraintTop_toBottomOf="@id/currentEventInfo"
+            app:layout_constraintTop_toBottomOf="@id/currentStepInfo"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             />
 
         <TextView
-            android:id="@+id/nextEventTime"
+            android:id="@+id/nextStepTime"
             android:text=""
             android:textSize="@dimen/info_text_size"
             android:layout_height="@dimen/info_height"
             android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/nextEventLabel"
+            app:layout_constraintTop_toBottomOf="@id/nextStepLabel"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             />
 
         <TextView
-            android:id="@+id/nextEventInfo"
+            android:id="@+id/nextStepInfo"
             android:text=""
             android:textSize="@dimen/info_text_size"
             android:layout_height="@dimen/info_height"
             android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/nextEventTime"
+            app:layout_constraintTop_toBottomOf="@id/nextStepTime"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             />
 
         <TextView
-            android:id="@+id/timeToNextEventLabel"
+            android:id="@+id/timeToNextStepLabel"
             android:text="@string/time_to_next_event_label"
             android:layout_height="@dimen/label_height"
             android:layout_width="match_parent"
             android:textSize="@dimen/label_text_size"
-            app:layout_constraintTop_toBottomOf="@id/nextEventInfo"
+            app:layout_constraintTop_toBottomOf="@id/nextStepInfo"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             />
 
         <TextView
-            android:id="@+id/timeToNextEventInfo"
+            android:id="@+id/timeToNextStepInfo"
             android:text=""
             android:textSize="@dimen/info_text_size"
             android:layout_height="@dimen/info_height"
             android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/timeToNextEventLabel"
+            app:layout_constraintTop_toBottomOf="@id/timeToNextStepLabel"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             />

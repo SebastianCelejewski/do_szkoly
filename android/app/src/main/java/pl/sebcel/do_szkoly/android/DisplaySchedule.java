@@ -20,13 +20,28 @@ public class DisplaySchedule extends AppCompatActivity {
 
     private DateFormat df = new SimpleDateFormat("H:mm");
 
+    private TextView completedSteps;
+    private TextView currentStep;
+    private TextView outstandingSteps;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initializeGUI();
+        subscribeToScheduleServiceNotifications();
+    }
+
+    private void initializeGUI() {
         setContentView(R.layout.activity_display_schedule);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        completedSteps = findViewById(R.id.completedSteps);
+        currentStep = findViewById(R.id.currentStep);
+        outstandingSteps = findViewById(R.id.outstandingSteps);
+    }
+
+    private void subscribeToScheduleServiceNotifications() {
         IntentFilter timeUpdateFilter = new IntentFilter(ScheduleService.HANDLE_TIME_UPDATE_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
             @Override
@@ -41,10 +56,6 @@ public class DisplaySchedule extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                TextView completedStepsView = (findViewById(R.id.completedSteps));
-                TextView currentStepView = (findViewById(R.id.currentStep));
-                TextView outstandingStepsView = (findViewById(R.id.outstandingSteps));
-
                 String completedStepsText = "";
                 String currentStepText = "";
                 String outstandingStepsText = "";
@@ -57,11 +68,11 @@ public class DisplaySchedule extends AppCompatActivity {
                 }
 
                 if (timeInformation.getCurrentStep() != null) {
-                    currentStepText = "Teraz: " + timeInformation.getCurrentStep().getDescription() + "\n";
+                    currentStepText = "Aktualny krok: " + timeInformation.getCurrentStep().getDescription() + "\n";
                 }
 
                 if (timeInformation.getNextStep() != null) {
-                    currentStepText += "Jeszcze " + timeInformation.getTimeToNextStepInMinutes() + " min.";
+                    currentStepText += "Do następnego kroku: " + timeInformation.getTimeToNextStepInMinutes() + " min.";
                 }
 
                 for (Step step : timeInformation.getOutstandingSteps()) {
@@ -71,9 +82,9 @@ public class DisplaySchedule extends AppCompatActivity {
                     outstandingStepsText += stepToString(step);
                 }
 
-                completedStepsView.setText(completedStepsText);
-                currentStepView.setText(currentStepText);
-                outstandingStepsView.setText(outstandingStepsText);
+                completedSteps.setText(completedStepsText);
+                currentStep.setText(currentStepText);
+                outstandingSteps.setText(outstandingStepsText);
             }
         });
     }
