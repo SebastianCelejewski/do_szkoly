@@ -29,6 +29,9 @@ public class DisplaySchedule extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initializeGUI();
         subscribeToScheduleServiceNotifications();
+
+        TimeInformation timeInformation = (TimeInformation) getIntent().getExtras().getSerializable(ScheduleService.TIME_UPDATE_DATA);
+        handleTimeInformation(timeInformation);
     }
 
     private void initializeGUI() {

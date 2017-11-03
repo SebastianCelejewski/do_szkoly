@@ -28,6 +28,8 @@ public class DisplayTime extends AppCompatActivity {
     private TextView nextStepInfo;
     private TextView timeToNextStepInfo;
 
+    private TimeInformation mostRecentTimeInformation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +83,7 @@ public class DisplayTime extends AppCompatActivity {
     }
 
     private void handleTimeInformation(final TimeInformation timeInformation) {
+        this.mostRecentTimeInformation = timeInformation;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -107,6 +110,7 @@ public class DisplayTime extends AppCompatActivity {
 
     private void onShowScheduleClick() {
         Intent intent = new Intent(this, DisplaySchedule.class);
+        intent.putExtra(ScheduleService.TIME_UPDATE_DATA, mostRecentTimeInformation);
         startActivity(intent);
     }
 

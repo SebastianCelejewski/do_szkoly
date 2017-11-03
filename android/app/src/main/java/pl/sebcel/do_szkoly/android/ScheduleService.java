@@ -26,10 +26,10 @@ public class ScheduleService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
 
         Engine engine = new Engine();
-        engine.addStep("12:00", "Ubieranie się");
-        engine.addStep("12:30", "Wychodzenie z domu");
-        engine.addStep("12:43", "Autobus 268");
-        engine.addStep("13:00", "W szkole");
+        engine.addStep("14:00", "Ubieranie się");
+        engine.addStep("14:30", "Wychodzenie z domu");
+        engine.addStep("14:43", "Autobus 268");
+        engine.addStep("14:00", "W szkole");
 
         engine.addEventListener(new EventListener() {
             @Override
@@ -40,6 +40,6 @@ public class ScheduleService extends IntentService {
             }
         });
 
-        engine.start(2);
+        engine.start(10);
     }
 }
