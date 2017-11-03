@@ -1,8 +1,9 @@
 package pl.sebcel.do_szkoly.engine;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Step {
+public class Step implements Serializable {
 
     private Date startTime;
 
