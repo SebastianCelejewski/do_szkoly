@@ -44,7 +44,7 @@ public class DisplayTime extends AppCompatActivity {
                     if (timeInformation.getCurrentStep() != null) {
                         ((TextView) findViewById(R.id.currentEventInfo)).setText(timeInformation.getCurrentStep().getDescription());
                      } else {
-                        ((TextView) findViewById(R.id.currentEventInfo)).setText("-")
+                        ((TextView) findViewById(R.id.currentEventInfo)).setText("-");
                     }
 
                     if (timeInformation.getNextStep() != null) {
