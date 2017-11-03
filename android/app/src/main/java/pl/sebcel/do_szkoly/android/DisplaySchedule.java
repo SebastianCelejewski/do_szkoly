@@ -1,6 +1,11 @@
 package pl.sebcel.do_szkoly.android;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
@@ -8,8 +13,6 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import pl.sebcel.do_szkoly.engine.Engine;
-import pl.sebcel.do_szkoly.engine.EventListener;
 import pl.sebcel.do_szkoly.engine.Step;
 import pl.sebcel.do_szkoly.engine.TimeInformation;
 
@@ -24,57 +27,55 @@ public class DisplaySchedule extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Engine engine = new Engine();
-        engine.addStep("12:00", "Ubieranie się");
-        engine.addStep("12:30", "Wychodzenie z domu");
-        engine.addStep("12:43", "Autobus 268");
-        engine.addStep("13:00", "W szkole");
-
-        engine.addEventListener(new EventListener() {
+        IntentFilter timeUpdateFilter = new IntentFilter(ScheduleService.HANDLE_TIME_UPDATE_ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
             @Override
-            public void handleTimeEvent(final TimeInformation timeInformation) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    TextView completedStepsView = (findViewById(R.id.completedSteps));
-                    TextView currentStepView = (findViewById(R.id.currentStep));
-                    TextView outstandingStepsView = (findViewById(R.id.outstandingSteps));
+            public void onReceive(Context context, Intent intent) {
+                TimeInformation timeInformation = (TimeInformation) intent.getSerializableExtra(ScheduleService.TIME_UPDATE_DATA);
+                handleTimeInformation(timeInformation);
+            }
+        }, timeUpdateFilter);
+    }
 
-                    String completedStepsText = "";
-                    String currentStepText = "";
-                    String outstandingStepsText = "";
+    private void handleTimeInformation(final TimeInformation timeInformation) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView completedStepsView = (findViewById(R.id.completedSteps));
+                TextView currentStepView = (findViewById(R.id.currentStep));
+                TextView outstandingStepsView = (findViewById(R.id.outstandingSteps));
 
-                    for (Step step : timeInformation.getCompletedSteps()) {
-                        if (completedStepsText.length() > 0) {
-                            completedStepsText += "\n";
-                        }
-                        completedStepsText += stepToString(step);
+                String completedStepsText = "";
+                String currentStepText = "";
+                String outstandingStepsText = "";
+
+                for (Step step : timeInformation.getCompletedSteps()) {
+                    if (completedStepsText.length() > 0) {
+                        completedStepsText += "\n";
                     }
-
-                    if (timeInformation.getCurrentStep() != null) {
-                        currentStepText = "Teraz: " + timeInformation.getCurrentStep().getDescription() + "\n";
-                    }
-
-                    if (timeInformation.getNextStep() != null) {
-                        currentStepText += "Jeszcze " + timeInformation.getTimeToNextStepInMinutes() + " min.";
-                    }
-
-                    for (Step step : timeInformation.getOutstandingSteps()) {
-                        if (outstandingStepsText.length() > 0) {
-                            outstandingStepsText += "\n";
-                        }
-                        outstandingStepsText += stepToString(step);
-                    }
-
-                    completedStepsView.setText(completedStepsText);
-                    currentStepView.setText(currentStepText);
-                    outstandingStepsView.setText(outstandingStepsText);
+                    completedStepsText += stepToString(step);
                 }
-            });
+
+                if (timeInformation.getCurrentStep() != null) {
+                    currentStepText = "Teraz: " + timeInformation.getCurrentStep().getDescription() + "\n";
+                }
+
+                if (timeInformation.getNextStep() != null) {
+                    currentStepText += "Jeszcze " + timeInformation.getTimeToNextStepInMinutes() + " min.";
+                }
+
+                for (Step step : timeInformation.getOutstandingSteps()) {
+                    if (outstandingStepsText.length() > 0) {
+                        outstandingStepsText += "\n";
+                    }
+                    outstandingStepsText += stepToString(step);
+                }
+
+                completedStepsView.setText(completedStepsText);
+                currentStepView.setText(currentStepText);
+                outstandingStepsView.setText(outstandingStepsText);
             }
         });
-
-        engine.start();
     }
 
     private String stepToString(Step step) {

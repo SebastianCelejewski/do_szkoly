@@ -1,9 +1,12 @@
 package pl.sebcel.do_szkoly.android;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -13,8 +16,6 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import pl.sebcel.do_szkoly.engine.Engine;
-import pl.sebcel.do_szkoly.engine.EventListener;
 import pl.sebcel.do_szkoly.engine.TimeInformation;
 
 public class DisplayTime extends AppCompatActivity {
@@ -28,40 +29,41 @@ public class DisplayTime extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Engine engine = new Engine();
-        engine.addStep("12:00", "Ubieranie się");
-        engine.addStep("12:30", "Wychodzenie z domu");
-        engine.addStep("12:43", "Autobus 268");
-        engine.addStep("13:00", "W szkole");
-
-        engine.addEventListener(new EventListener() {
+        IntentFilter timeUpdateFilter = new IntentFilter(ScheduleService.HANDLE_TIME_UPDATE_ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
             @Override
-            public void handleTimeEvent(final TimeInformation timeInformation) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ((TextView) findViewById(R.id.currentTimeInfo)).setText(df.format(timeInformation.getCurrentTime()));
-                    if (timeInformation.getCurrentStep() != null) {
-                        ((TextView) findViewById(R.id.currentEventInfo)).setText(timeInformation.getCurrentStep().getDescription());
-                     } else {
-                        ((TextView) findViewById(R.id.currentEventInfo)).setText("-");
-                    }
+            public void onReceive(Context context, Intent intent) {
+                TimeInformation timeInformation = (TimeInformation) intent.getSerializableExtra(ScheduleService.TIME_UPDATE_DATA);
+                handleTimeInformation(timeInformation);
+            }
+        }, timeUpdateFilter);
 
-                    if (timeInformation.getNextStep() != null) {
-                        ((TextView) findViewById(R.id.nextEventTime)).setText(df.format(timeInformation.getNextStep().getStartTime()));
-                        ((TextView) findViewById(R.id.nextEventInfo)).setText(timeInformation.getNextStep().getDescription());
-                        ((TextView) findViewById(R.id.timeToNextEventInfo)).setText(getString(R.string.time_in_minutes, timeInformation.getTimeToNextStepInMinutes()));
-                        ((TextView) findViewById(R.id.timeToNextEventInfo)).setTextColor(getTimeToNextEventColour(timeInformation.getTimeToNextStepInMinutes()));
-                    } else {
-                        ((TextView) findViewById(R.id.nextEventInfo)).setText("-");
-                        ((TextView) findViewById(R.id.timeToNextEventInfo)).setText("-");
-                    }
+        Intent scheduleServiceIntent = new Intent(this, ScheduleService.class);
+        startService(scheduleServiceIntent);
+    }
+
+    private void handleTimeInformation(final TimeInformation timeInformation) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((TextView) findViewById(R.id.currentTimeInfo)).setText(df.format(timeInformation.getCurrentTime()));
+                if (timeInformation.getCurrentStep() != null) {
+                    ((TextView) findViewById(R.id.currentEventInfo)).setText(timeInformation.getCurrentStep().getDescription());
+                } else {
+                    ((TextView) findViewById(R.id.currentEventInfo)).setText("-");
                 }
-            });
+
+                if (timeInformation.getNextStep() != null) {
+                    ((TextView) findViewById(R.id.nextEventTime)).setText(df.format(timeInformation.getNextStep().getStartTime()));
+                    ((TextView) findViewById(R.id.nextEventInfo)).setText(timeInformation.getNextStep().getDescription());
+                    ((TextView) findViewById(R.id.timeToNextEventInfo)).setText(getString(R.string.time_in_minutes, timeInformation.getTimeToNextStepInMinutes()));
+                    ((TextView) findViewById(R.id.timeToNextEventInfo)).setTextColor(getTimeToNextEventColour(timeInformation.getTimeToNextStepInMinutes()));
+                } else {
+                    ((TextView) findViewById(R.id.nextEventInfo)).setText("-");
+                    ((TextView) findViewById(R.id.timeToNextEventInfo)).setText("-");
+                }
             }
         });
-
-        engine.start();
     }
 
     public void onShowScheduleClick() {
