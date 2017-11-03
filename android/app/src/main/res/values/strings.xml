@@ -6,4 +6,6 @@
     <string name="current_event_label">Aktualny krok</string>
     <string name="next_event_label">Następny krok</string>
     <string name="time_to_next_event_label">Do następnego kroku pozostało</string>
+
+    <string name="time_in_minutes">%1$d min.</string>
 </resources>
