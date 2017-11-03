@@ -1,10 +1,10 @@
 package pl.sebcel.do_szkoly.engine;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.TreeMap;
 
-public class TimeInformation {
+public class TimeInformation implements Serializable {
 
     private Date currentTime;
     private Step currentStep;
