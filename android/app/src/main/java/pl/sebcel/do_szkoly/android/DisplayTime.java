@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import pl.sebcel.do_szkoly.engine.TimeInformation;
 
@@ -32,6 +34,8 @@ public class DisplayTime extends AppCompatActivity {
 
     private TimeInformation mostRecentTimeInformation;
 
+    TextToSpeech textToSpeech;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +43,21 @@ public class DisplayTime extends AppCompatActivity {
         subscribeToScheduleServiceNotifications();
         createScheduleService();
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String s = sharedPreferences.getString("pref_target_time", "");
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                System.out.println("TTS status: " + status);
+                textToSpeech.setLanguage(Locale.UK);
+            }
+        });
+    }
+
+    public void onPause(){
+        if(textToSpeech !=null){
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onPause();
     }
 
     @Override
@@ -106,6 +123,10 @@ public class DisplayTime extends AppCompatActivity {
                 }
 
                 if (timeInformation.getNextStep() != null) {
+
+                    String whatToSay = timeInformation.getTimeToNextStepInMinutes() + " minutes to " + timeInformation.getNextStep().getDescription();
+                    textToSpeech.speak(whatToSay, TextToSpeech.QUEUE_FLUSH, null);
+
                     nextStepTime.setText(df.format(timeInformation.getNextStep().getStartTime()));
                     nextStepInfo.setText(timeInformation.getNextStep().getDescription());
                     timeToNextStepInfo.setText(getString(R.string.time_in_minutes, timeInformation.getTimeToNextStepInMinutes()));
