@@ -72,6 +72,7 @@ public class ScheduleService extends IntentService implements EventListener{
     private void addSteps(Engine engine, String targetTime) {
         System.out.println("AddSteps: " + targetTime);
         if (targetTime.equals("8_10")) {
+            engine.addStep("7:15", "Pakowanie się");
             engine.addStep("7:30", "Ubieranie się");
             engine.addStep("7:45", "Wychodzenie z domu");
             engine.addStep("8:00", "Autobus 168");
@@ -79,6 +80,7 @@ public class ScheduleService extends IntentService implements EventListener{
         }
 
         if (targetTime.equals("9_05")) {
+            engine.addStep("8:00", "Pakowanie się");
             engine.addStep("8:15", "Ubieranie się");
             engine.addStep("8:30", "Wychodzenie z domu");
             engine.addStep("8:43", "Autobus 268");
@@ -86,38 +88,11 @@ public class ScheduleService extends IntentService implements EventListener{
         }
 
         if (targetTime.equals("10_00")) {
+            engine.addStep("9:00", "Pakowanie się");
             engine.addStep("9:15", "Ubieranie się");
             engine.addStep("9:30", "Wychodzenie z domu");
-            engine.addStep("9:47", "Autobus 268");
+            engine.addStep("9:48", "Autobus 268");
             engine.addStep("10:00", "W szkole");
-        }
-
-        if (targetTime.equals("14_00")) {
-            engine.addStep("13:00", "Ubieranie się");
-            engine.addStep("13:30", "Wychodzenie z domu");
-            engine.addStep("13:43", "Autobus 268");
-            engine.addStep("14:00", "W szkole");
-        }
-
-        if (targetTime.equals("15_00")) {
-            engine.addStep("14:00", "Ubieranie się");
-            engine.addStep("14:30", "Wychodzenie z domu");
-            engine.addStep("14:43", "Autobus 268");
-            engine.addStep("15:00", "W szkole");
-        }
-
-        if (targetTime.equals("16_00")) {
-            engine.addStep("15:00", "Ubieranie się");
-            engine.addStep("15:30", "Wychodzenie z domu");
-            engine.addStep("15:43", "Autobus 268");
-            engine.addStep("16:00", "W szkole");
-        }
-
-        if (targetTime.equals("17_00")) {
-            engine.addStep("16:00", "Ubieranie się");
-            engine.addStep("16:30", "Wychodzenie z domu");
-            engine.addStep("16:43", "Autobus 268");
-            engine.addStep("17:00", "W szkole");
         }
     }
 }
