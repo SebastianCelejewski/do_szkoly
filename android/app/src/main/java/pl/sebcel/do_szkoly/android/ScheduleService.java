@@ -1,4 +1,4 @@
-package pl.sebcel.do_szkoly.android;
+﻿package pl.sebcel.do_szkoly.android;
 
 import android.app.IntentService;
 import android.content.BroadcastReceiver;
@@ -72,7 +72,7 @@ public class ScheduleService extends IntentService implements EventListener{
     private void addSteps(Engine engine, String targetTime) {
         System.out.println("AddSteps: " + targetTime);
         if (targetTime.equals("8_10")) {
-            engine.addStep("7:15", "Pakowanie się");
+            engine.addStep("7:15", "Szykowanie się");
             engine.addStep("7:30", "Ubieranie się");
             engine.addStep("7:45", "Wychodzenie z domu");
             engine.addStep("8:00", "Autobus 168");
@@ -80,7 +80,7 @@ public class ScheduleService extends IntentService implements EventListener{
         }
 
         if (targetTime.equals("9_05")) {
-            engine.addStep("8:00", "Pakowanie się");
+            engine.addStep("8:00", "Szykowanie się");
             engine.addStep("8:15", "Ubieranie się");
             engine.addStep("8:30", "Wychodzenie z domu");
             engine.addStep("8:43", "Autobus 268");
@@ -88,7 +88,7 @@ public class ScheduleService extends IntentService implements EventListener{
         }
 
         if (targetTime.equals("10_00")) {
-            engine.addStep("9:00", "Pakowanie się");
+            engine.addStep("9:00", "Szykowanie się");
             engine.addStep("9:15", "Ubieranie się");
             engine.addStep("9:30", "Wychodzenie z domu");
             engine.addStep("9:48", "Autobus 268");
