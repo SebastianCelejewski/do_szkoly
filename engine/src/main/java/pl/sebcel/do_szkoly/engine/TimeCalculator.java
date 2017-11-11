@@ -22,14 +22,17 @@ import java.util.*;
  */
 public class TimeCalculator {
 
+    private Set<VoiceInformation> pastVoiceInformations = new HashSet<>();
+
     public TimeInformation calculateTimeInformation(TreeMap<Date, String> schedule, Date currentTime) {
 
         Step currentStep = findCurrentStep(schedule, currentTime);
         Step nextStep = findNextStep(schedule, currentTime);
         List<Step> completedSteps = findCompletedSteps(schedule, currentStep);
         List<Step> outstandingSteps = findOutstandingSteps(schedule, currentStep);
+        VoiceInformation voiceInformation = calculateVoiceInformation(nextStep, currentTime);
 
-        return new TimeInformation(currentTime, currentStep, nextStep, completedSteps, outstandingSteps);
+        return new TimeInformation(currentTime, currentStep, nextStep, completedSteps, outstandingSteps, voiceInformation);
     }
 
     private Step findCurrentStep(TreeMap<Date, String> schedule, Date currentTime) {
@@ -86,5 +89,66 @@ public class TimeCalculator {
         }
 
         return outstandingSteps;
+    }
+
+    private VoiceInformation calculateVoiceInformation(Step nextStep, Date currentTime) {
+        if (weAreAfterLastStep(nextStep)) {
+            return null;
+        }
+
+        Map<Date, Integer> syntheticEvents = generateSyntheticEvents(nextStep);
+        Date mostRecentlyCrossedSyntheticEventDate = findMostRecentlyCrossedSyntheticEventDate(syntheticEvents, currentTime);
+
+        if (weAreWayBeforeTheFirstSyntheticEvent(mostRecentlyCrossedSyntheticEventDate)) {
+            return null;
+        }
+
+        int syntheticTimeToNextStepInMinutes = (int) (nextStep.getStartTime().getTime() - mostRecentlyCrossedSyntheticEventDate.getTime())/60/1000;
+        int realTimeToNextStepInMinutes = (int) (nextStep.getStartTime().getTime() -  currentTime.getTime())/60/1000;
+        String text = "Next step in " + (realTimeToNextStepInMinutes + 1) + " minutes. " + nextStep.getDescription();
+
+        VoiceInformation voiceInformation = new VoiceInformation(nextStep, syntheticTimeToNextStepInMinutes, realTimeToNextStepInMinutes, text);
+
+        if (voiceInformationAlreadySent(voiceInformation)) {
+            return null;
+        }
+
+        pastVoiceInformations.add(voiceInformation);
+        return voiceInformation;
+    }
+
+
+    private boolean weAreAfterLastStep(Step nextStep) {
+        return nextStep == null;
+    }
+
+    private Date findMostRecentlyCrossedSyntheticEventDate(Map<Date, Integer> syntheticEvents, Date currentTime) {
+        Date selectedSyntheticEventDate = null;
+        for (Date syntheticEventDate : syntheticEvents.keySet()) {
+            if (syntheticEventDate.before(currentTime)) {
+                selectedSyntheticEventDate = syntheticEventDate;
+            }
+        }
+        return selectedSyntheticEventDate;
+    }
+
+    private boolean weAreWayBeforeTheFirstSyntheticEvent(Date selectedSyntheticEventDate) {
+        return selectedSyntheticEventDate == null;
+    }
+
+    private boolean voiceInformationAlreadySent(VoiceInformation voiceInformation) {
+        return pastVoiceInformations.contains(voiceInformation);
+    }
+
+    private Map<Date,Integer> generateSyntheticEvents(Step nextStep) {
+        Map<Date, Integer> syntheticSteps = new TreeMap<>();
+        syntheticSteps.put(new Date(nextStep.getStartTime().getTime() - 1*60*1000), 1);
+        syntheticSteps.put(new Date(nextStep.getStartTime().getTime() - 2*60*1000), 2);
+        syntheticSteps.put(new Date(nextStep.getStartTime().getTime() - 5*60*1000), 5);
+        syntheticSteps.put(new Date(nextStep.getStartTime().getTime() - 10*60*1000), 10);
+        syntheticSteps.put(new Date(nextStep.getStartTime().getTime() - 15*60*1000), 15);
+        syntheticSteps.put(new Date(nextStep.getStartTime().getTime() - 30*60*1000), 30);
+        syntheticSteps.put(new Date(nextStep.getStartTime().getTime() - 60*60*1000), 60);
+        return syntheticSteps;
     }
 }

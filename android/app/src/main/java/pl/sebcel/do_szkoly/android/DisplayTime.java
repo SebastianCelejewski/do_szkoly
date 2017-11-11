@@ -114,6 +114,11 @@ public class DisplayTime extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                if (timeInformation.getVoiceInformation() != null) {
+                    textToSpeech.speak(timeInformation.getVoiceInformation().getText(), TextToSpeech.QUEUE_FLUSH, null);
+                    System.out.println("Voice: " + timeInformation.getVoiceInformation().getText());
+                }
+
                 currentTimeInfo.setText(df.format(timeInformation.getCurrentTime()));
 
                 if (timeInformation.getCurrentStep() != null) {
@@ -123,10 +128,6 @@ public class DisplayTime extends AppCompatActivity {
                 }
 
                 if (timeInformation.getNextStep() != null) {
-
-                    String whatToSay = timeInformation.getTimeToNextStepInMinutes() + " minutes to " + timeInformation.getNextStep().getDescription();
-                    textToSpeech.speak(whatToSay, TextToSpeech.QUEUE_FLUSH, null);
-
                     nextStepTime.setText(df.format(timeInformation.getNextStep().getStartTime()));
                     nextStepInfo.setText(timeInformation.getNextStep().getDescription());
                     timeToNextStepInfo.setText(getString(R.string.time_in_minutes, timeInformation.getTimeToNextStepInMinutes()));

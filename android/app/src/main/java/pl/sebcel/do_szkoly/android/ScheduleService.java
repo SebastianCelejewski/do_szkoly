@@ -94,5 +94,21 @@ public class ScheduleService extends IntentService implements EventListener{
             engine.addStep("9:48", "Autobus 268");
             engine.addStep("10:00", "W szkole");
         }
+
+        if (targetTime.equals("13_00")) {
+            engine.addStep("12:00", "Szykowanie się");
+            engine.addStep("12:15", "Ubieranie się");
+            engine.addStep("12:30", "Wychodzenie z domu");
+            engine.addStep("12:48", "Autobus 268");
+            engine.addStep("13:00", "W szkole");
+        }
+
+        if (targetTime.equals("14_00")) {
+            engine.addStep("13:00", "Szykowanie się");
+            engine.addStep("13:15", "Ubieranie się");
+            engine.addStep("13:30", "Wychodzenie z domu");
+            engine.addStep("13:48", "Autobus 268");
+            engine.addStep("14:00", "W szkole");
+        }
     }
 }

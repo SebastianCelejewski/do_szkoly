@@ -67,6 +67,12 @@ public class MainFrame extends JFrame {
             initializeFrame();
         }
 
+        if (timeInformation.getVoiceInformation() != null) {
+            System.out.println(timeInformation.getCurrentTime().toString() + " " + timeInformation.getVoiceInformation().getText());
+        } else {
+            System.out.println(timeInformation.getCurrentTime().toString() + " No voice information");
+        }
+
         Date currentTime = timeInformation.getCurrentTime();
         Step currentStep = timeInformation.getCurrentStep();
         Step nextStep = timeInformation.getNextStep();

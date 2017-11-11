@@ -11,13 +11,15 @@ public class TimeInformation implements Serializable {
     private Step nextStep;
     private List<Step> completedSteps;
     private List<Step> outstandingSteps;
+    private VoiceInformation voiceInformation;
 
-    public TimeInformation(Date currentTime, Step currentStep, Step nextStep, List<Step> completedSteps, List<Step> outstandingSteps) {
+    public TimeInformation(Date currentTime, Step currentStep, Step nextStep, List<Step> completedSteps, List<Step> outstandingSteps, VoiceInformation voiceInformation) {
         this.currentTime = currentTime;
         this.currentStep = currentStep;
         this.nextStep = nextStep;
         this.completedSteps = completedSteps;
         this.outstandingSteps = outstandingSteps;
+        this.voiceInformation = voiceInformation;
     }
 
     public Date getCurrentTime() {
@@ -38,6 +40,10 @@ public class TimeInformation implements Serializable {
 
     public List<Step> getOutstandingSteps() {
         return outstandingSteps;
+    }
+
+    public VoiceInformation getVoiceInformation() {
+        return voiceInformation;
     }
 
     public long getTimeToNextStepInMinutes() {

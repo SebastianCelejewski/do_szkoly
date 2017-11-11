@@ -4,18 +4,14 @@
         <item>8:10</item>
         <item>9:05</item>
         <item>10:00</item>
+        <item>13:00</item>
         <item>14:00</item>
-        <item>15:00</item>
-        <item>16:00</item>
-        <item>17:00</item>
     </string-array>
     <string-array name="pref_target_time_values">
         <item>8_10</item>
         <item>9_05</item>
         <item>10_00</item>
+        <item>13_00</item>
         <item>14_00</item>
-        <item>15_00</item>
-        <item>16_00</item>
-        <item>17_00</item>
     </string-array>
 </resources>
