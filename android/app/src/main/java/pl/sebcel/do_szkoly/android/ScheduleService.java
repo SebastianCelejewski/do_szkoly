@@ -1,4 +1,4 @@
-﻿package pl.sebcel.do_szkoly.android;
+package pl.sebcel.do_szkoly.android;
 
 import android.app.IntentService;
 import android.content.BroadcastReceiver;
