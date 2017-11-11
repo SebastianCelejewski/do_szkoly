@@ -34,30 +34,35 @@ public class DisplayTime extends AppCompatActivity {
 
     private TimeInformation mostRecentTimeInformation;
 
-    TextToSpeech textToSpeech;
+    private TextToSpeech textToSpeech;
+    private BroadcastReceiver broadcastReceiver;
+
+    public DisplayTime() {
+        System.out.println("["+this.toString()+"] Creating instance");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println("["+this.toString()+"] onCreate");
         initializeGUI();
-        subscribeToScheduleServiceNotifications();
         createScheduleService();
-
-        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                System.out.println("TTS status: " + status);
-                textToSpeech.setLanguage(Locale.UK);
-            }
-        });
     }
 
-    public void onPause(){
-        if(textToSpeech !=null){
-            textToSpeech.stop();
-            textToSpeech.shutdown();
-        }
-        super.onPause();
+    @Override
+    public void onStart() {
+        System.out.println("["+this.toString()+"] onStart");
+        subscribeToScheduleServiceNotifications();
+        initializeTextToSpeech();
+        super.onStart();
+    }
+
+    @Override
+    public void onStop(){
+        System.out.println("["+this.toString()+"] onStop");
+        unsubscribeFromScheduleServiceNotifications();
+        deinitializeTextToSpeech();
+        super.onStop();
     }
 
     @Override
@@ -94,14 +99,38 @@ public class DisplayTime extends AppCompatActivity {
     }
 
     private void subscribeToScheduleServiceNotifications() {
+        System.out.println("["+this.toString()+"] subscribeToScheduleServiceNotifications");
         IntentFilter timeUpdateFilter = new IntentFilter(ScheduleService.HANDLE_TIME_UPDATE_ACTION);
-        LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
+        broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 TimeInformation timeInformation = (TimeInformation) intent.getSerializableExtra(ScheduleService.TIME_UPDATE_DATA);
                 handleTimeInformation(timeInformation);
+            }};
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, timeUpdateFilter);
+    }
+
+    private void unsubscribeFromScheduleServiceNotifications() {
+        System.out.println("["+this.toString()+"] unsubscribeFromScheduleServiceNotifications");
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+    }
+
+    private void initializeTextToSpeech() {
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                System.out.println("["+this.toString()+"] TTS status: " + status);
+                textToSpeech.setLanguage(Locale.UK);
             }
-        }, timeUpdateFilter);
+        });
+    }
+
+    private void deinitializeTextToSpeech() {
+        if(textToSpeech !=null){
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
     }
 
     private void createScheduleService() {
@@ -110,13 +139,14 @@ public class DisplayTime extends AppCompatActivity {
     }
 
     private void handleTimeInformation(final TimeInformation timeInformation) {
+        System.out.println("["+this.toString()+"] handleTimeInformation");
         this.mostRecentTimeInformation = timeInformation;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (timeInformation.getVoiceInformation() != null) {
                     textToSpeech.speak(timeInformation.getVoiceInformation().getText(), TextToSpeech.QUEUE_FLUSH, null);
-                    System.out.println("Voice: " + timeInformation.getVoiceInformation().getText());
+                    System.out.println("["+this.toString()+"] " + timeInformation.getVoiceInformation().getText());
                 }
 
                 currentTimeInfo.setText(df.format(timeInformation.getCurrentTime()));
