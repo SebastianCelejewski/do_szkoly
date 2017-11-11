@@ -27,7 +27,7 @@ public class TimeCalculatorSpecs {
     }
 
     @Test
-    public void should_return_steps_that_have_time_earlier_to_current_time_to_CompletedSteps() {
+    public void should_return_steps_that_have_time_earlier_to_current_time_as_CompletedSteps() {
         List<Step> actualResult = timeInformation.getCompletedSteps();
         Assert.assertEquals(2, actualResult.size());
         Assert.assertEquals("Step 1", actualResult.get(0).getDescription());
