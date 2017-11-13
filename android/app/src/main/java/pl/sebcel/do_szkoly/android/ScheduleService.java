@@ -44,7 +44,7 @@ public class ScheduleService extends Service implements EventListener{
     private void configureEngine() {
         System.out.println("[" + this.toString() + "] Configure engine");
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String targetTime = sharedPreferences.getString("pref_target_time", "");
+        String targetTime = sharedPreferences.getString(SettingsActivity.PREFERENCES_TARGET_TIME, "");
 
         if (engine != null) {
             System.out.println("Unsubscribing from engine " + engine.toString());
