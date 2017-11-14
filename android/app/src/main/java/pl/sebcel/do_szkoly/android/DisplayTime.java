@@ -4,10 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -46,22 +44,37 @@ public class DisplayTime extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("["+this.toString()+"] onCreate");
         initializeGUI();
-        createScheduleService();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                createScheduleService();
+            }
+        }).start();
     }
 
     @Override
     public void onStart() {
         System.out.println("["+this.toString()+"] onStart");
-        subscribeToScheduleServiceNotifications();
-        initializeTextToSpeech();
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                subscribeToScheduleServiceNotifications();
+                initializeTextToSpeech();
+            }
+        }).start();
         super.onStart();
     }
 
     @Override
     public void onStop(){
         System.out.println("["+this.toString()+"] onStop");
-        unsubscribeFromScheduleServiceNotifications();
-        deinitializeTextToSpeech();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                unsubscribeFromScheduleServiceNotifications();
+                deinitializeTextToSpeech();
+            }
+        }).start();
         super.onStop();
     }
 
