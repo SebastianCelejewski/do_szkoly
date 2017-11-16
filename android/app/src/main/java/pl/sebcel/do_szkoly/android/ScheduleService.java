@@ -114,6 +114,14 @@ public class ScheduleService extends Service implements EventListener{
             engine.addStep("10:00", "W szkole");
         }
 
+        if (targetTime.equals("10_55")) {
+            engine.addStep("9:45", "Szykowanie się");
+            engine.addStep("9:55", "Ubieranie się");
+            engine.addStep("10:05", "Wychodzenie z domu");
+            engine.addStep("10:20", "Autobus 167");
+            engine.addStep("10:55", "W szkole");
+        }
+
         if (targetTime.equals("19_00")) {
             engine.addStep("18:00", "Szykowanie się");
             engine.addStep("18:15", "Ubieranie się");

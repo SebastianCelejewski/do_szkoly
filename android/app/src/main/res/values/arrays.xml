@@ -5,6 +5,7 @@
         <item>9:05 - Fip</item>
         <item>9:05 - Kocio</item>
         <item>10:00</item>
+        <item>10:55</item>
         <item>19:00</item>
     </string-array>
     <string-array name="pref_target_time_values">
@@ -12,6 +13,7 @@
         <item>9_05_F</item>
         <item>9_05_K</item>
         <item>10_00</item>
+        <item>10_55</item>
         <item>19_00</item>
     </string-array>
 </resources>
